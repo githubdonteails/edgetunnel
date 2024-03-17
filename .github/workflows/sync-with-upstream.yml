@@ -1,28 +1,20 @@
-name: Sync Fork
+name: Sync Upstream
 
+# This runs every day on 1801 UTC
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs every day at midnight
+    - cron: '1 18 * * *'
+  # Allows manual workflow run (must in default branch to work)
+  workflow_dispatch:
 
 jobs:
-  sync:
+  build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0 # Fetch all history for all branches and tags
-
-    - name: Configure git
-      run: |
-        git config --global user.email "github@dontemails.net"
-        git config --global user.name "github dontemails"
-
-    - name: Sync with Upstream
-      run: |
-        git remote add upstream https://github.com/cmliu/edgetunnel.git
-        git fetch upstream
-        git checkout main
-        git merge upstream/main
-        git push origin main
-
+      - name: GitHub Sync to Upstream Repository
+        uses: Andrey1994/sync-upstream-repo@0.0.2
+        with: 
+          upstream_repo: https://github.com/cmliu/edgetunnel.git # change this
+          upstream_branch: main # change this
+          downstream_branch: main # change this
+          token: ${{ secrets.PAT_TOKEN }}
