@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: 
+      name: envs
     steps:
       - name: GitHub Sync to Upstream Repository
         uses: Andrey1994/sync-upstream-repo@0.0.2
